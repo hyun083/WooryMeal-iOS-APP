@@ -9,6 +9,20 @@ import SwiftUI
 
 struct WeeklyView: View {
     //static let menus: [Table] = [Table(id: 1, date: "2025-01-21", meals: Meals(lunch: Meal(), dinner: Meal()))]
+    private static let string2DateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
+    
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "MM월 dd일 EEEE"
+        return formatter
+    }()
+    
     let menus: [Table]
     let preferredMenu: [String]
 
@@ -17,10 +31,14 @@ struct WeeklyView: View {
             VStack(alignment: .leading){
                 ForEach(menus, id: \.id){ item in
                     VStack(alignment:.leading){
-                        let date = item.date.split(separator: "-")
-                        let month = date[1]
-                        let day = date[2]
-                        GroupBox(label: Text("\(month)월 \(day)일")){
+                        let dateString: String = {
+                            guard let temp = WeeklyView.string2DateFormatter.date(from: item.date) else {
+                                return item.date
+                            }
+                            return WeeklyView.dateFormatter.string(from: temp)
+                        }()
+                        
+                        GroupBox(label: Text(dateString)){
                             if let lunch = item.meals.lunch{
                                 HStack{
                                     VStack(alignment: .leading){

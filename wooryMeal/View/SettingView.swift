@@ -20,7 +20,7 @@ struct SettingView: View {
             Section{
                 Picker("조회 지역", selection: $selectedRegion){
                     Text("용인 연구소").tag(RegionType.yongin)
-                    /*Text("평택 공장").tag(RegionType.pyeongtaek)*/
+                    Text("평택 공장").tag(RegionType.pyeongtaek)
                 }
             } /*header: { Text("section1") }*/
             

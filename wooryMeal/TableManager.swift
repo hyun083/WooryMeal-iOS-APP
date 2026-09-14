@@ -9,20 +9,22 @@ import Foundation
 
 class TableManager{
     static let shared = TableManager()
-    private var serviceURL:String{
-        guard let url = Bundle.main.object(forInfoDictionaryKey: "SERVICE_URL") as? String else{
+    
+    private var serviceURL:URL?{
+        guard let urlString = Bundle.main.object(forInfoDictionaryKey: "SERVICE_URL") as? String,
+        let url = URL(string: urlString) else{
             fatalError( "ServiceURL not found")
         }
         return url
     }
     
-    func fetchMenuData(completion: @escaping (Result<[Table], Error>) -> Void){
+    func fetchMenuData(for region: RegionType, completion: @escaping (Result<[Table], Error>) -> Void){
         print("fetchMenuData...")
-        guard let url = URL(string: serviceURL + "/menu") else{
+        guard let url = serviceURL?.appendingPathComponent(region.rawValue).appendingPathComponent("menu") as URL? else{
             completion(.failure(NSError(domain: "InvalidURL", code: 0, userInfo: nil)))
             return
         }
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
@@ -52,9 +54,9 @@ class TableManager{
         }.resume()
     }
     
-    func fetchMenuData(on date: String, completion: @escaping (Result<[Table], Error>) -> Void){
+    func fetchMenuData(for region: RegionType, on date: String, completion: @escaping (Result<[Table], Error>) -> Void){
         print("fetchMenuData...")
-        guard let url = URL(string: serviceURL + "/menu/\(date)") else{
+        guard let url = serviceURL?.appendingPathComponent(region.rawValue).appendingPathComponent(date) as URL? else{
             completion(.failure(NSError(domain: "InvalidURL", code: 0, userInfo: nil)))
             return
         }

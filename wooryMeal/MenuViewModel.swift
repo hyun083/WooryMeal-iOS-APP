@@ -43,7 +43,7 @@ class MenuViewModel: ObservableObject {
     }
     
     func fetchMenus() {
-        TableManager.shared.fetchMenuData { result in
+        TableManager.shared.fetchMenuData(for: region) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let menus):
@@ -80,7 +80,7 @@ class MenuViewModel: ObservableObject {
     }
     
     func fetchMenus(on date: String) {
-        TableManager.shared.fetchMenuData(on: date) { result in
+        TableManager.shared.fetchMenuData(for: region, on: date) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let menus):
@@ -94,11 +94,13 @@ class MenuViewModel: ObservableObject {
     
     func setSelectedRegion(){
         UserDefaults.standard.set(self.region.rawValue, forKey: "region")
+        fetchMenus()
         print("region: \(self.region.rawValue) set.")
     }
     
     func setPreferredMenu(){
         UserDefaults.standard.set(self.preferredMenu, forKey: "userPreferred")
+        fetchMenus()
         print("userPreferred updated",self.preferredMenu)
     }
 }

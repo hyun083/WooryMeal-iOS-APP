@@ -123,7 +123,7 @@ struct mealListView: View{
     var mealList: Text{
         data.reduce(Text("")){ res, item in
             let meal = MealText(str: item, with: preferredMenu).asText()
-            return res + meal + (data.last == item ? Text("") : Text(", "))
+            return res + meal + ((item == "" || item == data.last) ? Text("") : Text(", "))
         }
     }
     

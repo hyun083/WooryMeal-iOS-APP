@@ -17,7 +17,7 @@ struct Table: Codable, Identifiable{
 
 // MARK: - Meals
 struct Meals: Codable{
-    let lunch, dinner: Meal?
+    let breakfast, lunch, dinner: Meal?
 }
 
 // MARK: - Meal

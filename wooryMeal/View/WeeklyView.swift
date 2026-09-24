@@ -39,6 +39,20 @@ struct WeeklyView: View {
                         }()
                         
                         GroupBox(label: Text(dateString)){
+                            if let breakfast = item.meals.breakfast{
+                                HStack{
+                                    VStack(alignment: .leading){
+                                        Text("아침")
+                                            .padding(.vertical,2.5)
+                                            .padding(.horizontal, 7)
+                                            .overlay(content: { RoundedRectangle(cornerRadius: 5)
+                                                    .stroke(Color.gray)
+                                            })
+                                        mealListView(meal: breakfast, prefered: preferredMenu)
+                                    }
+                                    Spacer()
+                                }
+                            }
                             if let lunch = item.meals.lunch{
                                 HStack{
                                     VStack(alignment: .leading){
@@ -109,7 +123,7 @@ struct mealListView: View{
     var mealList: Text{
         data.reduce(Text("")){ res, item in
             let meal = MealText(str: item, with: preferredMenu).asText()
-            return res + meal + (data.last == item ? Text("") : Text(", "))
+            return res + meal + ((item == "" || item == data.last) ? Text("") : Text(", "))
         }
     }
     
@@ -119,6 +133,6 @@ struct mealListView: View{
 }
 
 #Preview {
-    let menus: [Table] = [Table(id: 1, date: "2025-01-21", meals: Meals(lunch: Meal(), dinner: Meal()), order: ["1조","2조","3조"])]
+    let menus: [Table] = [Table(id: 1, date: "2025-01-21", meals: Meals(breakfast: Meal(), lunch: Meal(), dinner: Meal()), order: ["1조","2조","3조"])]
     WeeklyView(menus: menus, preferredMenu: [])
 }

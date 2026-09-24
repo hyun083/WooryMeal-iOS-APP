@@ -24,7 +24,11 @@ struct ContentView: View {
                         Text(menuVM.todayMenu?.order.joined(separator: " → ") ?? " ")
                     }
                     .padding(.horizontal, 20)
+                    .padding(.vertical, 3)
                     HStack{
+                        if menuVM.region == RegionType.pyeongtaek{
+                            MenuView(mealData: menuVM.todayMenu?.meals.breakfast, type: "오늘 아침", preferredMenu: menuVM.preferredMenu)
+                        }
                         MenuView(mealData: menuVM.todayMenu?.meals.lunch, type: "오늘 점심", preferredMenu: menuVM.preferredMenu)
                         MenuView(mealData: menuVM.todayMenu?.meals.dinner, type: "오늘 저녁", preferredMenu: menuVM.preferredMenu)
                     }
